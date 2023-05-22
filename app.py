@@ -12,12 +12,9 @@ import string
 import random
 import re
 
-nltk.download('vader_lexicon')
-nltk.download('stopwords')
-
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = "redis://:p5bed7313aec3cbc1ec1f64c0b9b236decec9fafa10eafe5fdd4743f54c77fb35@ec2-52-23-144-238.compute-1.amazonaws.com:15519"
+app.config["REDIS_URL"] = "redis://:p01e3feb3c869e4e3ca6a6a681cbf143ff0eab3799d9da1cd6d9ff387eb0bcd88@ec2-3-234-14-83.compute-1.amazonaws.com:26889"
 redis_client = FlaskRedis(app)
 app.jinja_env.globals.update(zip=zip)
 
