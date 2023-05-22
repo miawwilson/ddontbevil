@@ -17,7 +17,7 @@ nltk.download('stopwords')
 
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = "redis://localhost:6379/0"
+app.config["REDIS_URL"] = "rediss://:p5bed7313aec3cbc1ec1f64c0b9b236decec9fafa10eafe5fdd4743f54c77fb35@ec2-52-23-144-238.compute-1.amazonaws.com:15520"
 redis_client = FlaskRedis(app)
 app.jinja_env.globals.update(zip=zip)
 
