@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Today's AI News Mood</title>
+    <style>
+      body {
+        background-color: black;
+      }
+      .word-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        max-width: 80%;
+        margin: 0 auto;
+      }
+      .word-cloud .word {
+        display: inline-block;
+        margin: 10px;
+        font-size: calc(2em + {{ count }} * 0.5em);
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        transform: rotate(-45deg);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        min-width: 150px;
+        min-height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .word-cloud .word:hover {
+        transform: scale(1.2) rotate(-45deg);
+      }
+      .title {
+        text-align: center;
+        font-size: 3em;
+        font-weight: bold;
+        color: white;
+        margin-top: 50px;
+      }
+      .subtitle {
+        text-align: center;
+        font-size: 2em;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 50px;
+      }
+      .articles {
+        margin-top: 50px;
+        max-width: 80%;
+        margin: 0 auto;
+      }
+      .article {
+        margin: 10px;
+        font-size: 1.5em;
+        color: white;
+        cursor: pointer;
+      }
+      .article:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Today's AI News Mood...</div>
+    <div class="subtitle">The most frequently occurring words in news pertaining to AI today are...</div>
+    <div class="word-cloud">
+      {% for word, count in word_list %}
+        <a href="/articles/{{ word }}"><span class="word" style="font-size: calc(2em + {{ count }} * 0.5em);">{{ word }}</span></a>
+      {% endfor %}
+    </div>
+    <div class="articles">
+      {% if articles %}
+        <h1>Articles Containing "{{ keyword }}"</h1>
+        <ul>
+            {% for article in articles %}
+            <li><a href="/articles/{{ keyword }}/{{ article }}"><span class="article">{{ article }}</span></a></li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </body>
+</html>
+

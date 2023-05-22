@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+   body {
+     background-color: black;
+   }
+   .title {
+   text-align: center;
+   font-size: 8em;
+   font-weight: bold;
+   color: white;
+   margin-top: 50px;
+   }
+   .social-media {
+     text-align: center;
+     font-size: 1.5em;
+     font-weight: bold;
+     color: white;
+     margin-bottom: 5px;
+     margin-top: 5px;
+   }
+  .word-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    max-width: 65%;
+    margin: 0 auto;
+  }
+  .word-cloud .word {
+    display: inline-block;
+    margin: 30px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    transform: rotate(-20deg);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    min-width: 10px;
+    min-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .word-cloud .word:hover {
+    transform-origin: center;
+    transform: scale(1.2), rotate(-10deg);
+  }
+  .tooltip {
+    position: absolute;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    margin-bottom: 5px;
+  }
+  .word:hover .tooltip {
+    visibility: visible;
+    opacity: 10;
+  }
+        .subtitle2 {
+        text-align: center;
+        font-size: 2.5em;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 5px;
+        margin-top: 50px;
+      }
+       .subtitle22 {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 50px;
+        margin-top: 5px;
+      }
+       .back-button {
+         position: absolute;
+         top: 30px;
+         left: 30px;
+         background-color: transparent;
+         border: none;
+         font-size: 3em;
+         color: white;
+         cursor: pointer;
+         padding: 0;
+         outline: none;
+         transition: transform 0.3s ease;
+      }
+       .back-button:hover {
+         transform: scale(1.2);
+      }
+      hr.title-line {
+    border: none; /* remove the default border */
+    height: 1px; /* specify the height of the line */
+    background-color: white; /* make the line white */
+    width: 100%; /* make it go fully across the page */
+}
+</style>
+
+<body>
+    <div class="title"> DONT BE EVIL </div>
+    <button class="back-button" onclick="window.history.back()">&#x2190;</button>
+    <div class="social-media">
+      @DDONTBEVIL
+       <!-- Your images here -->
+    </div>
+    <hr class=title-line"/>
+    <div class="subtitle2">Enter a word to generate a word cloud with AI news...</div>
+    <div class="user-input">
+        <form action="/userinput/" method="post">
+            <input type="text" name="user_query" placeholder="Enter your word here">
+            <button type="submit">Generate Word Cloud</button>
+        </form>
+    </div>
+    <div class="subtitle22">The most frequently occurring words in news pertaining to AI and your word today are...</div>
+    <div class="word-cloud">
+      {% for word, count in word_list %}
+        <a href="/articles/{{ word }}"><span class="word" style="font-size: calc(1.2em + {{ count }} * 0.02em);" data-count="{{ count }}">{{ word }}</span></a>
+      {% endfor %}
+    </div>
+    <div class="articles">
+      {% if articles %}
+        <h1>Articles Containing "{{ keyword }}"</h1>
+        <ul>
+          {% for article in articles %}
+            <li><a href="{{ url_for('articles', word=keyword, article=article) }}">{{ article }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+</body>
+
+<script>
+     document.addEventListener("DOMContentLoaded", function() {
+        var words = document.querySelectorAll(".word-cloud .word");
+        words.forEach(function(word) {
+          var randomAngle = Math.floor(Math.random() * 41) - 20; // generates a random angle between -20 and 20 degrees
+          word.style.transform = "rotate(" + randomAngle + "deg)";
+
+          // Create tooltip element
+          var tooltip = document.createElement('div');
+          tooltip.className = 'tooltip';
+          var count = word.getAttribute('data-count');
+          tooltip.innerHTML = 'Count: ' + count + '<br>Click to be taken to the articles in which this word appears!';
+          word.appendChild(tooltip);
+
+          // Add hover event listeners
+          word.addEventListener('mouseover', function() {
+            this.style.transform = "scale(1.2) rotate(" + randomAngle + "deg)";
+          });
+
+          word.addEventListener('mouseout', function() {
+            this.style.transform = "rotate(" + randomAngle + "deg)";
+          });
+        });
+      });`
+</script>
+</html>

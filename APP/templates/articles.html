@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Articles Containing "{{ keyword }}"</title>
+</head>
+<body>
+    <h1>Articles Containing "{{ keyword }}"</h1>
+    <ul>
+        {% for article in articles %}
+        <li><a href="{{ url_for('word', word=keyword, article=article) }}">{{ article }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+
+
+
+

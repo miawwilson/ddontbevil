@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="word-cloud">
+  {% for word, count in word_list %}
+    <a href="/articles/{{ word }}"><span class="word" style="font-size: calc(1.2em + {{ count }} * 0.02em);" data-count="{{ count }}">{{ word }}</span></a>
+  {% endfor %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var words = document.querySelectorAll(".word-cloud .word");
+    words.forEach(function(word) {
+      var randomAngle = Math.floor(Math.random() * 41) - 20; // generates a random angle between -20 and 20 degrees
+      word.style.transform = "rotate(" + randomAngle + "deg)";
+
+      // Create tooltip element
+      var tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      var count = word.getAttribute('data-count');
+      tooltip.innerHTML = 'Count: ' + count + '<br>Click to be taken to the articles in which this word appears!';
+      word.appendChild(tooltip);
+
+      // Add hover event listeners
+      word.addEventListener('mouseover', function() {
+        this.style.transform = "scale(1.2) rotate(" + randomAngle + "deg)";
+      });
+
+      word.addEventListener('mouseout', function() {
+        this.style.transform = "rotate(" + randomAngle + "deg)";
+      });
+    });
+  });
+</script>
+
+<style>
+  .word-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    max-width: 65%;
+    margin: 0 auto;
+  }
+  .word-cloud .word {
+    display: inline-block;
+    margin: 30px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    transform: rotate(-20deg);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    min-width: 10px;
+    min-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .word-cloud .word:hover {
+    transform-origin: center;
+    transform: scale(1.2), rotate(-10deg);
+  }
+  .tooltip {
+    position: absolute;
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    margin-bottom: 5px;
+  }
+  .word:hover .tooltip {
+    visibility: visible;
+    opacity: 10;
+  }
+</style>
+
+</html>

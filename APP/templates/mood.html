@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+
+<style>
+
+     body {
+     background-color: black;
+   }
+   .title {
+   text-align: center;
+   font-size: 8em;
+   font-weight: bold;
+   color: white;
+   margin-top: 50px;
+   }
+         .subtitle2 {
+        text-align: center;
+        font-size: 2.5em;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 5px;
+        margin-top: 50px;
+      }
+       .subtitle22 {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 50px;
+        margin-top: 5px;
+      }
+   .back-button {
+     position: absolute;
+     top: 30px;
+     left: 30px;
+     background-color: transparent;
+     border: none;
+     font-size: 3em;
+     color: white;
+     cursor: pointer;
+     padding: 0;
+     outline: none;
+     transition: transform 0.3s ease;
+    }
+     .back-button:hover {
+       transform: scale(1.2);
+    }
+      .mood {
+        text-align: center;
+        font-size: 2em;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+      }
+
+      .mood:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      hr.title-line {
+    border: none; /* remove the default border */
+    height: 1px; /* specify the height of the line */
+    background-color: white; /* make the line white */
+    width: 100%; /* make it go fully across the page */
+}
+</style>
+<body>
+    <div class="title"> DONT BE EVIL </div>
+        <button class="back-button" onclick="window.history.back()">&#x2190;</button>
+    <hr class=title-line"/>
+    <div class="subtitle2">The current mood around AI is...</div>
+      <div class="subtitle22">Click below to see full sentiment analysis...</div>
+    <div class="mood" id="moodWord">
+      {% if mood == 'Positive' %}
+        <span style="color: green;">{{ mood }} &#x1F600;</span>
+      {% elif mood == 'Negative' %}
+        <span style="color: red;">{{ mood }} &#x1F641;</span>
+      {% else %}
+        <span style="color: yellow;">{{ mood }} &#x1F610;</span>
+      {% endif %}
+    </div>
+
+    <div style="width: 60%; margin: 50px auto; display: none;" id="chartContainer">
+      <canvas id="sentimentChart"></canvas>
+    </div>
+
+</body>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var moodWord = document.getElementById('moodWord');
+        if (moodWord) {
+          moodWord.addEventListener('click', function() {
+            var chartContainer = document.getElementById('chartContainer');
+            if (chartContainer.style.display === 'none') {
+              chartContainer.style.display = 'block';
+              initSentimentChart(); // Call the function to initialize the chart
+            } else {
+              chartContainer.style.display = 'none';
+            }
+          });
+        }
+
+        function initSentimentChart() {
+          // Bar chart script
+          var sentimentChartData = {{ sentiment_data|tojson }};
+          var ctx = document.getElementById('sentimentChart').getContext('2d');
+          var sentimentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['Positive', 'Negative', 'Neutral'],
+              datasets: [{
+                label: 'Sentiment Analysis',
+                data: sentimentChartData,
+                backgroundColor: [
+                  'rgba(75, 192, 192, 0.2)', // Positive color
+                  'rgba(255, 99, 132, 0.2)', // Negative color
+                  'rgba(255, 206, 86, 0.2)'  // Neutral color
+                ],
+                borderColor: [
+                  'rgba(75, 192, 192, 1)', // Positive color
+                  'rgba(255, 99, 132, 1)', // Negative color
+                  'rgba(255, 206, 86, 1)'  // Neutral color
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: 'Percentage'
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: false
+                }
+              },
+              onCLick: function(event, elements) {
+                if (elements.length > 0) {
+                  var index = elements[0].index;
+                  displayWordCloud(index);
+                }
+              }
+            }
+          });
+        }
+
+        function displayWordCloud(index) {
+           // Hide all word clouds
+           var wordClouds = document.querySelectorAll(".word-cloud");
+           wordClouds.forEach(function(wordCloud) {
+             wordCloud.style.display = "none";
+           });
+
+           // Show the word cloud corresponding to the clicked bar
+           var selectedWordCloud = document.getElementById("wordCloud" + index);
+           if (selectedWordCloud) {
+             selectedWordCloud.style.display = "block";
+           }
+         }
+         </script>
+</html>
