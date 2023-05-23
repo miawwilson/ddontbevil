@@ -14,7 +14,7 @@ import re
 
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = "redis://:p9e63812005251c9236ad4c48f31867f9d1802b2963cde6cfd595b9032b4e5ae5@ec2-52-23-144-238.compute-1.amazonaws.com:28850?ssl_cert_reqs=CERT_NONE"
+app.config["REDIS_URL"] = "rediss://:p9e63812005251c9236ad4c48f31867f9d1802b2963cde6cfd595b9032b4e5ae5@ec2-52-23-144-238.compute-1.amazonaws.com:28850"
 redis_client = FlaskRedis(app)
 app.jinja_env.globals.update(zip=zip)
 
