@@ -15,7 +15,6 @@ cycler==0.11.0
 darkdetect==0.8.0
 distlib==0.3.6
 filelock==3.9.0
-Flask==2.2.3
 fonttools==4.39.2
 idna==3.4
 itsdangerous==2.1.2
