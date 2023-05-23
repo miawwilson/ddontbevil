@@ -1,14 +1,337 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
 
-{% block content %}
-    <h1>Articles containing "{{ word }}"</h1>
-    {% if articles %}
-        {% for article in articles %}
-            <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-            <p>{{ article.snippet }}</p>
-            <hr>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>DONT BE EVIL</title>
+
+<style>
+      body {
+        background-color: black;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .title {
+        display: block;
+        text-align: center;
+        font-size: 3.7em; /* smaller font size for mobile */
+        font-weight: bold;
+        color: white;
+        margin-top: 20px;
+        margin-left: 5px;
+        margin-right: 5px;
+        text-decoration: none;
+      }
+      hr.title-line {
+        border: none;
+        height: 1px;
+        background-color: white;
+        width: 100%;
+      }
+      .date, .social-media-content, .subtitle, .website-age {
+        text-align: center;
+        font-size: 0.7em; /* smaller font size for mobile */
+        font-weight: bold;
+        color: white;
+        margin-bottom: 1px;
+        margin-top: 1px;
+        margin-left: 5px;
+        margin-right: 5px;
+        white-space: nowrap;
+      }
+      .website-age {
+        text-align: center;
+        font-size: 0.7em; /* smaller font size for mobile */
+        font-weight: bold;
+        color: white;
+        margin-bottom: 1px;
+        margin-top: 1px;
+      }
+      .social-media {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+      }
+      .companies-button {
+        display: block;
+        color: white;
+        text-align: center;
+        font-size: 0.8em;
+        font-weight: bold;
+        background-color: black;
+        border: 1px solid white;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        padding: 10px 10px;
+        margin: 10px auto;
+        width: 30%; /* full width on mobile */
+        transition: background-color 0.3s;
+      }
+      .companies-button:hover {
+        background-color: #222;
+      }
+      .button-container {
+        display: flex;
+        flex-direction: row; /* stack buttons vertically on mobile */
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 5px;
+      }
+      .subtitle1 {
+        text-align: center;
+        font-size: 0.8em;
+        font-weight: bold;
+        color: white;
+        margin: auto;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        width: 90%; /* full width on mobile */
+      }
+      .company-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 50px;
+        max-width: 80%;
+        margin: 0 auto;
+      }
+      .company {
+        flex-basis: 50%;
+        padding: 0 20px;
+        text-align: centre;
+      }
+      .company h2 {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .word-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 auto;
+        text-decoration: none;
+      }
+      .word {
+        display: inline-block;
+        margin: 10px;
+        font-weight: bold;
+        font-size 1em;
+        text-decoration: none;
+        color: white;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        transform: rotate(-20deg);
+        transition: transform 0.2s ease;
+        cursor: pointer;
+        min-width: 10px;
+        min-height: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .tooltip {
+        position: absolute;
+        background-color: black;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.3s, opacity 0.3s;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        margin-bottom: 5px;
+      }
+      .word:hover {
+        text-decoration: underline;
+        transform: rotate(-20deg) scale(1.2);
+      }
+      .word:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+       .back-button {
+         position: fixed;
+         top: 5px;
+         left: 5px;
+         background-color: transparent;
+         border: none;
+         font-size: 1.2em;
+         color: white;
+         cursor: pointer;
+         padding: 0;
+         outline: none;
+         transition: transform 0.3s ease;
+      }
+       .back-button:hover {
+         transform: scale(1.2);
+      }
+
+/* Styles for screens larger than 600px (tablets, desktops) */
+@media screen and (min-width: 600px) {
+  .title {
+    font-size: 8em; /* larger font size for larger screens */
+  }
+  .subtitle1 {
+    width: 50%; /* 50% width on larger screens */
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .companies-button {
+    font-size: 1.5em;
+    width: fit-content; /* let width be determined by content on larger screens */
+  }
+  .button-container {
+    flex-direction: row; /* arrange buttons horizontally on larger screens */
+    flex-wrap: nowrap;
+    justify-content: start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 15px;
+  }
+  .social-media {
+    justify-content: space-between; /* to distribute items evenly on the line with more space on larger screens */
+    flex-wrap: nowrap; /* to prevent items from wrapping onto the next line on larger screens */
+    gap: 50px; /* larger gap on larger screens */
+  }
+  .date, .social-media-content, .subtitle, .website-age {
+    font-size: 1.2em; /* larger font size for larger screens */
+  }
+  .back-button {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background-color: transparent;
+    border: none;
+    font-size: 3em;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    transition: transform 0.3s ease;
+      }
+  .back-button:hover {
+    transform: scale(1.2);
+  }
+}
+    </style>
+
+  <body onload="showDate()">
+  <a href="/" class="title">DONT BE EVIL</a>
+    <button class="back-button" onclick="window.history.back()">&#x2190;</button>
+  <div class="date" id="date"></div>
+
+  <hr class="title-line"/>
+  <div class="social-media">
+    <div class="website-age" id="website-age"></div>
+      <div class="social-media-content">
+      @DDONTBEVIL
+      <img src="https://drive.google.com/uc?export=view&id=1DCebRZ_Yb1FX53EitK2C4YQtSVGAl8cK" style="height: 0.7em;">
+      <img src="https://drive.google.com/uc?export=view&id=1_DnwJHkXmTN2D8uqFYvLH0A-njPyoNgI" style="height: 0.7em;">
+      </div>
+    <div class="subtitle">AN AI NEWS AGGREGATOR</div>
+  </div>
+  <hr class="title-line"/>
+
+
+    <div class="button-container">
+        <a href="/wordcloud/" class="companies-button">AI News: Top Words</a>
+        <a href="/mood/" class="companies-button">AI News: Mood</a>
+        <a href="/companies/" class="companies-button">AI News: Companies</a>
+        <a href="/userinput/" class="companies-button">AI News: Search</a>
+    </div>
+
+    <h1 class="subtitle1">By aggregating news articles and analysing word frequency, this page offers
+                         insights into the topics that dominate the news coverage of 4 big AI companies:
+                         Google, OpenAI, Amazon and Microsoft. </h1>
+
+    <div class="company-container">
+        {% for company_articles, company_word_list, company_sentiment_score in zip(all_articles, all_word_lists, all_sentiment_scores) %}
+        <div class="company">
+{% for company, articles in company_articles.items() %}
+    <h2>{{ company }}</h2>
+              <div class="word-cloud">
+                {% for word, count in company_word_list[company] %}
+                  <a href="/articles/{{ word }}"><span class="word" style="font-size: calc(1.2em + {{ count }} * 0.002em);" data-count="{{ count }}">{{ word }}</span></a>
+                {% endfor %}
+              </div>
+            {% endfor %}
+        </div>
         {% endfor %}
-    {% else %}
-        <p>No articles found.</p>
-    {% endif %}
-{% endblock %}
+    </div>
+
+      <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var words = document.querySelectorAll(".word-cloud .word");
+        words.forEach(function(word) {
+          var randomAngle = Math.floor(Math.random() * 41) - 20; // generates a random angle between -20 and 20 degrees
+          word.style.transform = "rotate(" + randomAngle + "deg)";
+
+          // Create tooltip element
+          var tooltip = document.createElement('div');
+          tooltip.className = 'tooltip';
+          var count = word.getAttribute('data-count');
+          tooltip.innerHTML = 'Count: ' + count + '<br>Click to be taken to the articles in which this word appears!';
+          word.appendChild(tooltip);
+
+          // Add hover event listeners
+          word.addEventListener('mouseover', function() {
+            this.style.transform = "scale(1.2) rotate(" + randomAngle + "deg)";
+          });
+
+          word.addEventListener('mouseout', function() {
+            this.style.transform = "rotate(" + randomAngle + "deg)";
+          });
+        });
+      });
+
+window.onload = function() {
+  showDate();
+  websiteAge();
+}
+
+function getOrdinal(n) {
+  var s = ["th","st","nd","rd"],
+      v = n % 100;
+  return n + (s[(v-20)%10]||s[v]||s[0]);
+}
+
+function showDate() {
+  var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var d = new Date();
+  var day = weekday[d.getDay()];
+  var date = getOrdinal(d.getDate());
+  var month = monthName[d.getMonth()];
+  var year = d.getFullYear();
+
+  var dateString = day.toUpperCase() + ', ' + date + ' ' + month.toUpperCase() + ' ' + year;
+  document.getElementById("date").innerHTML = dateString;
+}
+
+function websiteAge() {
+  var websiteStartDate = new Date("2023-05-22"); // website start date
+  var today = new Date();
+  var diffTime = Math.abs(today - websiteStartDate);
+  var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  document.getElementById("website-age").innerHTML = "VOL. " + diffDays;
+}
+    </script>
+</body>
+</html>
