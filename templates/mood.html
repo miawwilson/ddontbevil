@@ -1,169 +1,383 @@
 <!DOCTYPE html>
+
 <html lang="en">
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>DONT BE EVIL</title>
 
 <style>
-
-     body {
-     background-color: black;
-   }
-   .title {
-   text-align: center;
-   font-size: 8em;
-   font-weight: bold;
-   color: white;
-   margin-top: 50px;
-   }
-         .subtitle2 {
-        text-align: center;
-        font-size: 2.5em;
-        font-weight: bold;
-        color: white;
-        margin-bottom: 5px;
-        margin-top: 50px;
-      }
-       .subtitle22 {
-        text-align: center;
-        font-size: 1.5em;
-        font-weight: bold;
-        color: white;
-        margin-bottom: 50px;
-        margin-top: 5px;
-      }
-   .back-button {
-     position: absolute;
-     top: 30px;
-     left: 30px;
-     background-color: transparent;
-     border: none;
-     font-size: 3em;
-     color: white;
-     cursor: pointer;
-     padding: 0;
-     outline: none;
-     transition: transform 0.3s ease;
-    }
-     .back-button:hover {
-       transform: scale(1.2);
-    }
-      .mood {
-        text-align: center;
-        font-size: 2em;
-        font-weight: bold;
-        color: white;
-        cursor: pointer;
-      }
-
-      .mood:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
-      hr.title-line {
-    border: none; /* remove the default border */
-    height: 1px; /* specify the height of the line */
-    background-color: white; /* make the line white */
-    width: 100%; /* make it go fully across the page */
+  body {
+    background-color: black;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .title {
+    display: block;
+    text-align: center;
+    font-size: 3.7em; /* smaller font size for mobile */
+    font-weight: bold;
+    color: white;
+    margin-top: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-decoration: none;
+  }
+  hr.title-line {
+    border: none;
+    height: 1px;
+    background-color: white;
+    width: 100%;
+  }
+.date, .social-media-content, .subtitle, .website-age {
+  text-align: center;
+  font-size: 0.7em; /* smaller font size for mobile */
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1px;
+  margin-top: 1px;
+  margin-left: 5px;
+  margin-right: 5px;
+  white-space: nowrap;
 }
-</style>
-<body>
-    <div class="title"> DONT BE EVIL </div>
-        <button class="back-button" onclick="window.history.back()">&#x2190;</button>
-    <hr class=title-line"/>
-    <div class="subtitle2">The current mood around AI is...</div>
-      <div class="subtitle22">Click below to see full sentiment analysis...</div>
-    <div class="mood" id="moodWord">
-      {% if mood == 'Positive' %}
-        <span style="color: green;">{{ mood }} &#x1F600;</span>
-      {% elif mood == 'Negative' %}
-        <span style="color: red;">{{ mood }} &#x1F641;</span>
-      {% else %}
-        <span style="color: yellow;">{{ mood }} &#x1F610;</span>
-      {% endif %}
-    </div>
-
-    <div style="width: 60%; margin: 50px auto; display: none;" id="chartContainer">
-      <canvas id="sentimentChart"></canvas>
-    </div>
-
-</body>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        var moodWord = document.getElementById('moodWord');
-        if (moodWord) {
-          moodWord.addEventListener('click', function() {
-            var chartContainer = document.getElementById('chartContainer');
-            if (chartContainer.style.display === 'none') {
-              chartContainer.style.display = 'block';
-              initSentimentChart(); // Call the function to initialize the chart
-            } else {
-              chartContainer.style.display = 'none';
-            }
-          });
+.website-age {
+  text-align: center;
+  font-size: 0.7em; /* smaller font size for mobile */
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+.social-media {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}
+  .companies-button {
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin: 10px auto;
+    width: 30%; /* full width on mobile */
+    transition: background-color 0.3s;
+  }
+  .companies-button:hover {
+    background-color: #222;
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row; /* stack buttons vertically on mobile */
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 5px;
+  }
+        .subtitle2 {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+            margin-top: 50px;
+        }
+        .subtitle1 {
+          text-align: center;
+          font-size: 1em;
+          font-weight: bold;
+          color: white;
+          margin: auto;
+          margin-bottom: 10px;
+          margin-top: 10px;
+          width: 90%; /* full width on mobile */
+      }
+       .back-button {
+         position: fixed;
+         top: 5px;
+         left: 5px;
+         background-color: transparent;
+         border: none;
+         font-size: 1.2em;
+         color: white;
+         cursor: pointer;
+         padding: 0;
+         outline: none;
+         transition: transform 0.3s ease;
+      }
+       .back-button:hover {
+         transform: scale(1.2);
+      }
+        .mood {
+            text-align: center;
+            font-size: 1em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+        .sentences {
+            color: white;
+        }
+        .word-cloud {
+            text-align: center;
+            padding: 20px;
+        }
+        .word-cloud .word {
+            display: inline-block;
+            padding: 5px;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin: 2px;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .word-cloud .word:hover {
+            transform: scale(1.2);
+        }
+        .word-cloud .word .tooltip {
+            position: absolute;
+            background-color: black;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            margin-bottom: 5px;
+        }
+        .word-cloud .word:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .pie-chart {
+            width: 50%;
+            margin: auto;
+        }
+        .pie-chart canvas {
+            width: 80%;
+            height: auto;
         }
 
-        function initSentimentChart() {
-          // Bar chart script
-          var sentimentChartData = {{ sentiment_data|tojson }};
-          var ctx = document.getElementById('sentimentChart').getContext('2d');
-          var sentimentChart = new Chart(ctx, {
-            type: 'bar',
+/* Styles for screens larger than 600px (tablets, desktops) */
+@media screen and (min-width: 600px) {
+  .title {
+    font-size: 8em; /* larger font size for larger screens */
+  }
+  .subtitle1 {
+    width: 50%; /* 50% width on larger screens */
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .companies-button {
+    font-size: 1.5em;
+    width: fit-content; /* let width be determined by content on larger screens */
+  }
+  .button-container {
+    flex-direction: row; /* arrange buttons horizontally on larger screens */
+    flex-wrap: nowrap;
+    justify-content: start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 15px;
+  }
+  .social-media {
+    justify-content: space-between; /* to distribute items evenly on the line with more space on larger screens */
+    flex-wrap: nowrap; /* to prevent items from wrapping onto the next line on larger screens */
+    gap: 50px; /* larger gap on larger screens */
+  }
+  .date, .social-media-content, .subtitle, .website-age {
+    font-size: 1.2em; /* larger font size for larger screens */
+  }
+  .back-button {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background-color: transparent;
+    border: none;
+    font-size: 3em;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    transition: transform 0.3s ease;
+      }
+  .back-button:hover {
+    transform: scale(1.2);
+  }
+}
+
+</style>
+
+  <body onload="showDate(); website-age();">
+  <a href="/" class="title">DONT BE EVIL</a>
+    <button class="back-button" onclick="window.history.back()">&#x2190;</button>
+  <div class="date" id="date"></div>
+
+  <hr class="title-line"/>
+  <div class="social-media">
+    <div class="website-age" id="website-age"></div>
+      <div class="social-media-content">
+      @DDONTBEVIL
+      <img src="https://drive.google.com/uc?export=view&id=1DCebRZ_Yb1FX53EitK2C4YQtSVGAl8cK" style="height: 0.7em;">
+      <img src="https://drive.google.com/uc?export=view&id=1_DnwJHkXmTN2D8uqFYvLH0A-njPyoNgI" style="height: 0.7em;">
+      </div>
+    <div class="subtitle">AN AI NEWS AGGREGATOR</div>
+  </div>
+  <hr class="title-line"/>
+
+    <div class="button-container">
+        <a href="/wordcloud/" class="companies-button">AI News: Top Words</a>
+        <a href="/mood/" class="companies-button">AI News: Mood</a>
+        <a href="/companies/" class="companies-button">AI News: Companies</a>
+        <a href="/userinput/" class="companies-button">AI News: Search</a>
+    </div>
+
+        <div class="subtitle1">This page offers sentiment analysis of the latest news articles concerning
+                                artificial intelligence, presenting data via a pie chart and word clouds
+                                which spotlight the prevailing positive, negative, or neutral keywords
+                                that are currently dominating the discourse.</div>
+
+
+    <div class="subtitle2">Positive words in AI news today...</div>
+    <div class="subtitle1">Click a word to be taken to its corresponding articles...</div>
+    <div id="positiveWords" class="word-cloud">
+        {% for word, count in positive_word_list %}
+            <a href="/articles/{{ word }}"><span class="word" style="font-size: calc(1.2em + {{ count }} * 0.02em);" data-count="{{ count }}">{{ word }}
+            <span class="tooltip">Count: {{ count }}<br>Click to view articles!</span></span></a>
+        {% endfor %}
+    </div>
+
+    <div class="subtitle2">Negative words in AI News today...</div>
+    <div class="subtitle1">Click a word to be taken to its corresponding articles...</div>
+    <div id="negativeWords" class="word-cloud">
+        {% for word, count in negative_word_list %}
+            <a href="/articles/{{ word }}"><span class="word" style="font-size: calc(1.2em + {{ count }} * 0.02em);" data-count="{{ count }}">{{ word }}
+            <span class="tooltip">Count: {{ count }}<br>Click to view articles!</span></span></a>
+        {% endfor %}
+    </div>
+
+      <div class="mood"> <h2>The current mood around AI is mostly... {{ prevalent_mood }} </h2> </div>
+    <div class="pie-chart"> <canvas id="sentimentChart"></canvas> </div>
+    <div id="sentimentGroups" style="width: 60%; margin: 50px auto;">
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctxSentiment = document.getElementById('sentimentChart').getContext('2d');
+
+        var positiveCount = {{ positive_count }};
+        var neutralCount = {{ neutral_count }};
+        var negativeCount = {{ negative_count }};
+
+        var sentimentChart = new Chart(ctxSentiment, {
+            type: 'pie',
             data: {
-              labels: ['Positive', 'Negative', 'Neutral'],
-              datasets: [{
-                label: 'Sentiment Analysis',
-                data: sentimentChartData,
-                backgroundColor: [
-                  'rgba(75, 192, 192, 0.2)', // Positive color
-                  'rgba(255, 99, 132, 0.2)', // Negative color
-                  'rgba(255, 206, 86, 0.2)'  // Neutral color
-                ],
-                borderColor: [
-                  'rgba(75, 192, 192, 1)', // Positive color
-                  'rgba(255, 99, 132, 1)', // Negative color
-                  'rgba(255, 206, 86, 1)'  // Neutral color
-                ],
-                borderWidth: 1
-              }]
+                labels: ['Positive', 'Neutral', 'Negative'],
+                datasets: [{
+                    data: [positiveCount, neutralCount, negativeCount],
+                    backgroundColor: [
+                        'rgba(255, 255, 255, 0.2)', // color for positive - white
+                        'rgba(128, 128, 128, 0.2)', // color for neutral - grey
+                        'rgba(64, 64, 64, 0.2)'     // color for negative - dark grey
+                    ],
+                    borderColor: [
+                        'rgba(255, 255, 255, 1)', // color for positive - white
+                        'rgba(128, 128, 128, 1)', // color for neutral - grey
+                        'rgba(64, 64, 64, 1)'     // color for negative - dark grey
+                    ],
+                    borderWidth: 1
+                }]
             },
             options: {
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  max: 100,
-                  title: {
-                    display: true,
-                    text: 'Percentage'
-                  }
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                            return label + ' sentences: ' + value;
+                        }
+                    }
                 }
-              },
-              plugins: {
-                legend: {
-                  display: false
-                }
-              },
-              onCLick: function(event, elements) {
-                if (elements.length > 0) {
-                  var index = elements[0].index;
-                  displayWordCloud(index);
-                }
-              }
             }
-          });
-        }
+        });
 
-        function displayWordCloud(index) {
-           // Hide all word clouds
-           var wordClouds = document.querySelectorAll(".word-cloud");
-           wordClouds.forEach(function(wordCloud) {
-             wordCloud.style.display = "none";
-           });
+        var words = document.querySelectorAll(".word-cloud .word");
+        words.forEach(function(word) {
+            var randomAngle = Math.floor(Math.random() * 41) - 20; // generates a random angle between -20 and 20 degrees
+            word.style.transform = "rotate(" + randomAngle + "deg)";
 
-           // Show the word cloud corresponding to the clicked bar
-           var selectedWordCloud = document.getElementById("wordCloud" + index);
-           if (selectedWordCloud) {
-             selectedWordCloud.style.display = "block";
-           }
-         }
-         </script>
+            // Add hover event listeners
+            word.addEventListener('mouseover', function() {
+                this.style.transform = "scale(1.2) rotate(" + randomAngle + "deg)";
+            });
+            // Create tooltip element
+            var tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            var count = word.getAttribute('data-count');
+            tooltip.innerHTML = 'Count: ' + count + '<br>Click to view articles!';
+            word.appendChild(tooltip);
+
+            word.addEventListener('mouseout', function() {
+                this.style.transform = "rotate(" + randomAngle + "deg)";
+            });
+        });
+    });
+
+window.onload = function() {
+  showDate();
+  websiteAge();
+}
+
+function getOrdinal(n) {
+  var s = ["th","st","nd","rd"],
+      v = n % 100;
+  return n + (s[(v-20)%10]||s[v]||s[0]);
+}
+
+function showDate() {
+  var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var d = new Date();
+  var day = weekday[d.getDay()];
+  var date = getOrdinal(d.getDate());
+  var month = monthName[d.getMonth()];
+  var year = d.getFullYear();
+
+  var dateString = day.toUpperCase() + ', ' + date + ' ' + month.toUpperCase() + ' ' + year;
+  document.getElementById("date").innerHTML = dateString;
+}
+
+function websiteAge() {
+  var websiteStartDate = new Date("2023-05-22"); // website start date
+  var today = new Date();
+  var diffTime = Math.abs(today - websiteStartDate);
+  var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  document.getElementById("website-age").innerHTML = "VOL. " + diffDays;
+}
+</script>
+</body>
 </html>
+
