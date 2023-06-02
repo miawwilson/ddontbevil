@@ -31,7 +31,7 @@ def index():
         'q': query,
         'tbm': 'nws',
         'num': 100,
-        'api_key': '189872377b6b631f9f0e925c3dabe549f96460fe7932b75304a0066e4fc8bd6c',
+        'api_key': 'de2597325b2c6d08cdef207af8762b22318c187a62ba0d2fe935db67aa0b33e0',
         'gl': 'uk'
     }
     search = GoogleSearch(params)
@@ -165,7 +165,7 @@ def articles(word):
         'q': query,
         'tbm': 'nws',
         'num': 100,
-        'api_key': '189872377b6b631f9f0e925c3dabe549f96460fe7932b75304a0066e4fc8bd6c'
+        'api_key': 'de2597325b2c6d08cdef207af8762b22318c187a62ba0d2fe935db67aa0b33e0'
     }
     search = GoogleSearch(params)
     news_results = search.get_dict()
@@ -207,7 +207,7 @@ def companies():
             'q': query,
             'tbm': 'nws',
             'num': 50,
-            'api_key': '189872377b6b631f9f0e925c3dabe549f96460fe7932b75304a0066e4fc8bd6c',
+            'api_key': 'de2597325b2c6d08cdef207af8762b22318c187a62ba0d2fe935db67aa0b33e0',
             'gl': 'uk'
         }
         search = GoogleSearch(params)
@@ -314,7 +314,7 @@ def wordcloud():
         'q': query,
         'tbm': 'nws',
         'num': 100,
-        'api_key': '189872377b6b631f9f0e925c3dabe549f96460fe7932b75304a0066e4fc8bd6c',
+        'api_key': 'de2597325b2c6d08cdef207af8762b22318c187a62ba0d2fe935db67aa0b33e0',
         'gl': 'uk'
     }
     search = GoogleSearch(params)
@@ -394,7 +394,7 @@ def mood():
         'q': query,
         'tbm': 'nws',
         'num': 100,
-        'api_key': '189872377b6b631f9f0e925c3dabe549f96460fe7932b75304a0066e4fc8bd6c',
+        'api_key': 'de2597325b2c6d08cdef207af8762b22318c187a62ba0d2fe935db67aa0b33e0',
         'gl': 'uk'
     }
     search = GoogleSearch(params)
@@ -530,7 +530,7 @@ def userinput():
             'q': query,
             'tbm': 'nws',
             'num': 100,
-            'api_key': '189872377b6b631f9f0e925c3dabe549f96460fe7932b75304a0066e4fc8bd6c',
+            'api_key': 'de2597325b2c6d08cdef207af8762b22318c187a62ba0d2fe935db67aa0b33e0',
             'gl': 'uk'
         }
         search = GoogleSearch(params)
